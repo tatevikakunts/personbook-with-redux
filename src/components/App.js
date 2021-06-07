@@ -79,7 +79,6 @@ const App =()=>{
     return(
         <GlobalContext.Provider value={{
             getPersonById,
-            //editPerson,
             albums,
             addNewAlbum,
             getAlbumById,

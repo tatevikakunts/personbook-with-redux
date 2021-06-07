@@ -91,10 +91,10 @@ const deletePersonFromState = (personId)=>{
     }
 }
 
-const editPersonInState =(personId)=>{
+const editPersonInState =(person)=>{
     return{
         type:EDIT_PERSON,
-        payload:personId
+        payload:person
     }
 }
 
@@ -127,8 +127,9 @@ const deleteFromServer = (personId)=>{
 }
 const editPersonOnServer = (person)=>{
     const idx = personsInitial.findIndex(p=>p.id ===person.id)
-    if (idx ===-1) return false
+    if (idx ===-1) return null
     personsInitial.splice(idx, 1, person)
     setPersonsToStorage(personsInitial)
+    console.log(personsInitial)
 }
 
