@@ -26,7 +26,7 @@ const reducer =(state= stateInit, action)=>{
         case CHANGE_EDIT_MODE:
             return{...state, persons:{...state.persons, editMode: action.payload}}
         case EDIT_PERSON:
-            return {...state, persons:{...state.persons, list:_array}}
+            return {...state, persons:{...state.persons, list:{...state.persons.list, ...action.payload}}}
 
 
 

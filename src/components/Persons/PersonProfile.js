@@ -9,7 +9,7 @@ import PersonalBlog from "../Posts/PersonalBlog";
 import {CHANGE_EDIT_MODE, EDIT_PERSON} from "../../store/typesList";
 
 
-const PersonProfile =({activePerson, editPerson, changeEditMode})=>{
+const PersonProfile =({activePerson, editPerson, editMode, changeEditMode})=>{
 
     const {id}=useParams()
     const {getPersonById, addNewAlbum, addNewPost}=useContext(GlobalContext)
