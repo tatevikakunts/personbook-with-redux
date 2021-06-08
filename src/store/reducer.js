@@ -1,5 +1,6 @@
 import {ADD_NEW_PERSON, CHANGE_ACTIVE_PERSON, CHANGE_EDIT_MODE, DELETE_PERSON, EDIT_PERSON} from "./typesList"
 import {FETCH_PERSONS} from "./typesList"
+import personsInitial from "../data/persons";
 
 const stateInit = {
     persons:{
@@ -26,7 +27,11 @@ const reducer =(state= stateInit, action)=>{
         case CHANGE_EDIT_MODE:
             return{...state, persons:{...state.persons, editMode: action.payload}}
         case EDIT_PERSON:
-            return {...state, persons:{...state.persons, list:{...state.persons.list, ...action.payload}}}
+            const arr = [...state.persons.list]
+            const index = arr.findIndex(p=>p.id ===action.payload.id)
+            if (index ===-1) return state
+            arr.splice(index, 1, action.payload)
+            return {...state, persons:{...state.persons, list:arr}}
 
 
 

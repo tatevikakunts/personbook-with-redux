@@ -6,7 +6,8 @@ import AddAlbum from "../Albums/AddAlbum";
 import PersonalAlbums from "../Albums/PersonalAlbums";
 import AddPost from "../Posts/AddPost";
 import PersonalBlog from "../Posts/PersonalBlog";
-import {CHANGE_EDIT_MODE, EDIT_PERSON} from "../../store/typesList";
+import {CHANGE_EDIT_MODE} from "../../store/typesList";
+import {editPerson} from "../../store/actions/persons";
 
 
 const PersonProfile =({activePerson, editPerson, editMode, changeEditMode})=>{
@@ -14,7 +15,6 @@ const PersonProfile =({activePerson, editPerson, editMode, changeEditMode})=>{
     const {id}=useParams()
     const {getPersonById, addNewAlbum, addNewPost}=useContext(GlobalContext)
     const [person, setPerson]= useState(null)
-    //const [editMode, setEditMode] = useState(false)
     const [addAlbum, setAddAlbum] = useState(false)
     const [addPost, setAddPost]= useState(false)
 
@@ -173,7 +173,7 @@ const mapStateToProps= (state)=>{
 const mapDispatchToProps= (dispatch)=>{
     return{
         changeEditMode:(editMode)=>dispatch({type:CHANGE_EDIT_MODE, payload:editMode}),
-        editPerson: (person) => dispatch({type:EDIT_PERSON, payload: person})
+        editPerson: (person) => dispatch(editPerson(person))
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PersonProfile)

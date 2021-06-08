@@ -53,8 +53,8 @@ export const getPersons = ()=>{
 export const editPerson = (person)=>{
     return async dispatch=>{
         try{
-            await editPersonOnServer(person.id)
-            await dispatch(editPersonInState(person.id))
+            await editPersonOnServer(person)
+            await dispatch(editPersonInState(person))
 
 
         }catch(err){
@@ -91,10 +91,10 @@ const deletePersonFromState = (personId)=>{
     }
 }
 
-const editPersonInState =(person)=>{
+const editPersonInState =(personId)=>{
     return{
         type:EDIT_PERSON,
-        payload:person
+        payload:personId
     }
 }
 
@@ -126,10 +126,10 @@ const deleteFromServer = (personId)=>{
     setPersonsToStorage(personsInitial)
 }
 const editPersonOnServer = (person)=>{
-    const idx = personsInitial.findIndex(p=>p.id ===person.id)
+    const arr = [...personsInitial]
+    const idx = arr.findIndex(p=>p.id ===person.id)
     if (idx ===-1) return null
-    personsInitial.splice(idx, 1, person)
-    setPersonsToStorage(personsInitial)
-    console.log(personsInitial)
+    arr.splice(idx, 1, person)
+    setPersonsToStorage(arr)
 }
 

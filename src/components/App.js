@@ -11,15 +11,6 @@ const App =()=>{
 
     const [persons, setPersons]=useState(personsInitial)
 
-    // const editPerson = person =>{
-    //     const newPersons = [...persons]
-    //     const idx = newPersons.findIndex(p=>p.id ===person.id)
-    //     if (idx ===-1) return false
-    //     newPersons.splice(idx, 1, person)
-    //     setPersons(newPersons)
-    //     setPersonsToStorage(newPersons)
-    // }
-
 
     const getPersonById = (id)=>{
         const idx = persons.findIndex(person=> person.id ===+id)
