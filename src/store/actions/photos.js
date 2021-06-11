@@ -38,7 +38,7 @@ const addPhotoInState = photo=>{
 //server side
 const getPic = ()=>{
     return{
-        list:[photosInitial]
+        list:[...photosInitial]
     }
 }
 const addPhotoOnServer = photo=>{

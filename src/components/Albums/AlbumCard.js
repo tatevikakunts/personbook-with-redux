@@ -2,20 +2,23 @@ import React, {useContext, useEffect, useState} from "react";
 import {GlobalContext} from "../App";
 import {useParams} from "react-router-dom"
 import PhotoCard from "../Photos/PhotoCard";
+import {connect} from "react-redux";
+import {setAlbumById} from "../../store/actions/albums";
+import {setPersonById} from "../../store/actions/persons";
 
-const AlbumCard = ()=>{
-    const {photos, getPersonById, getAlbumById} = useContext(GlobalContext)
+const AlbumCard = ({photos, setAlbumLocal, setLocalPerson})=>{
+    //const {getPersonById} = useContext(GlobalContext)
     const {id} = useParams()
-    const [album, setAlbum] = useState(getAlbumById(+id))
+    const [album, setAlbum] = useState()
     const [person, setPerson]= useState(null)
     const[albumPhotos, setAlbumPhotos]=useState(photos.filter(p=>p.albumId===+id))
 
     useEffect(()=>{
         if(album){
-            setPerson(getPersonById(album.personId))
-
+            setLocalPerson(album.personId)
+            setAlbumLocal(+id)
         }
-    },[album])
+    },[])
 
     const renderAlbum = ()=>{
         if(!album || !person){
@@ -35,4 +38,17 @@ const AlbumCard = ()=>{
 
     return renderAlbum()
 }
-export default AlbumCard
+const mapStateToProps = state=>{
+    return{
+        photos:state.photos.list
+    }
+}
+
+const mapDispatchToProps = dispatch=>{
+    return{
+        setAlbumLocal: id=>dispatch(setAlbumById(id)),
+        setLocalPerson:personId=>dispatch(setPersonById(personId))
+
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AlbumCard)
