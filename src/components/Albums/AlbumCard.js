@@ -9,7 +9,7 @@ import {setPersonById} from "../../store/actions/persons";
 const AlbumCard = ({photos, setAlbumLocal, setLocalPerson})=>{
     //const {getPersonById} = useContext(GlobalContext)
     const {id} = useParams()
-    const [album, setAlbum] = useState()
+    const [album, setAlbum] = useState(null)
     const [person, setPerson]= useState(null)
     const[albumPhotos, setAlbumPhotos]=useState(photos.filter(p=>p.albumId===+id))
 

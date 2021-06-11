@@ -3,7 +3,7 @@ import {useHistory} from 'react-router-dom'
 import {connect} from "react-redux";
 import {setPersonById} from "../../store/actions/persons";
 
-const AlbumCard = ({album, photo, setLocalPerson, person}) => {
+const Album = ({album, photo, setLocalPerson, person}) => {
     //const {getPersonById} = useContext(GlobalContext)
     //const person = getPersonById(album.personId)
 
@@ -44,4 +44,4 @@ const mapDispatchToProps = dispatch=>{
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (AlbumCard)
+export default connect(mapStateToProps, mapDispatchToProps) (Album)

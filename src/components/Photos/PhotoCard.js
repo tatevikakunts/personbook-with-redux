@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
 import {GlobalContext} from "../App"
-import {connect} from "react-redux";
+
 
 
 const PhotoCard = ({photo}) => {
