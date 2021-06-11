@@ -1,151 +1,119 @@
-import React, {useEffect, useContext, useState, Fragment} from "react";
-import {useParams} from "react-router-dom"
-import {connect} from "react-redux";
-import {GlobalContext} from "../App";
-import AddAlbum from "../Albums/AddAlbum";
-import PersonalAlbums from "../Albums/PersonalAlbums";
-import AddPost from "../Posts/AddPost";
-import PersonalBlog from "../Posts/PersonalBlog";
-import {CHANGE_EDIT_MODE} from "../../store/typesList";
-import {editPerson} from "../../store/actions/persons";
+import React, {Fragment, useEffect} from "react"
+import {useParams} from 'react-router-dom'
+import {connect} from "react-redux"
+import AddAlbum from "../Albums/AddAlbum"
+import PersonalAlbums from "../Albums/PersonalAlbums"
+import AddPost from "../Posts/AddPost"
+import PersonalBlog from "../Posts/PersonalBlog"
+import {editPerson, setPersonById} from "../../store/actions/persons";
+import EditPersonForm from "./EditPersonForm";
+import {CHANGE_ADD_ALBUM_MODE, CHANGE_ADD_POST, CHANGE_EDIT_MODE} from "../../store/typesList";
 
 
-const PersonProfile =({activePerson, editPerson, editMode, changeEditMode})=>{
+const PersonProfile = ({activePerson, editMode, setEditMode, setLocalPerson, person, addPostMode, setAddPostMode, addAlbumMode, setAddAlbumMode}) => {
 
-    const {id}=useParams()
-    const {getPersonById, addNewAlbum, addNewPost}=useContext(GlobalContext)
-    const [person, setPerson]= useState(null)
-    const [addAlbum, setAddAlbum] = useState(false)
-    const [addPost, setAddPost]= useState(false)
+    const {id} = useParams()
 
-    useEffect(()=>{
-        setPerson(getPersonById(id))
-    }, [])
+    //const [addAlbum, setAddAlbum] = useState(false)
 
-    const renderProfile = ()=>{
-        if(!person) return false
-        return(
+
+    useEffect(() => {
+        setLocalPerson(+id)
+    }, []);
+
+    useEffect(() => {
+        setLocalPerson(+id)
+    }, [editMode]);
+
+
+    const renderProfile = () => {
+        if (!person) return false
+        return (
             <div className="container">
                 <div className="card w-100">
-                    {editMode?renderForm():renderInfo()}
+                    {editMode ? renderForm() : renderInfo()}
                 </div>
                 {renderEditButton()}
             </div>
         )
-
     }
 
 
 
-    const changeFieldHandle = (event)=>{
-        setPerson({...person, [event.target.name]:event.target.value})
-    }
-
-    const renderForm = ()=>{
-        return(
-            <form onSubmit={submitFormHandle}>
-                <div className="form-group">
-                    <label>First Name</label>
-                    <input className="form-control" type="text" value={person.fName} name="fName" onChange={changeFieldHandle}/>
-                </div>
-                <div className="form-group">
-                    <label>Last Name</label>
-                    <input className="form-control" type="text" value={person.lName} name="lName" onChange={changeFieldHandle}/>
-                </div>
-                <div className="form-group">
-                    <label>Age</label>
-                    <input className="form-control" type="text" value={person.age} name="age" onChange={changeFieldHandle}/>
-                </div>
-                <div className="form-group">
-                    <label>Email</label>
-                    <input className="form-control" type="text" value={person.email} name="email" onChange={changeFieldHandle}/>
-                </div>
-                <div className="form-group">
-                    <label>Phone</label>
-                    <input className="form-control" type="text" value={person.phone} name="phone" onChange={changeFieldHandle}/>
-                </div>
-                <div className="form-group mb-2">
-                    <label>Avatar</label>
-                    <input className="form-control" type="text" value={person.avatar} name="avatar" onChange={changeFieldHandle}/>
-                </div>
-                <button type="submit">Save Change</button>
-            </form>
+    const renderForm = () => {
+        return (
+            <EditPersonForm person={person} />
         )
     }
 
-    const renderInfo = ()=>{
-        return(
+    const renderInfo = () => {
+        return (
             <Fragment>
-
-                        <img src={person.avatar} alt="{person.fName}" className="card-img-top"/>
-                        <div className="card-body">
-                            <h3 className="card-title">
-                                {person.fName} {person.lName}
-                            </h3>
-                            <div className="card-text">
-                                <p>{person.age}</p>
-                                <p>{person.phone}</p>
-                                <p>{person.email}</p>
-                            </div>
-                        </div>
-
+                <img src={person.avatar} className="card-img-top" alt="{person.fName} {person.lName}"/>
+                <div className="card-body">
+                    <h3 className="card-title">
+                        {person.fName} {person.lName}
+                    </h3>
+                    <div className="card-text">
+                        <p>{person.age}</p>
+                        <p>{person.phone}</p>
+                        <p>{person.email}</p>
+                    </div>
+                </div>
             </Fragment>
         )
     }
 
-    const submitFormHandle= (event)=>{
-        event.preventDefault()
-        editPerson(person)
-        changeEditMode(false)
-    }
-    const renderEditButton = ()=>{
-        if (activePerson !==person.id || editMode || addAlbum || addPost) return null
-        return(
+
+
+    const renderEditButton = () => {
+        if (activePerson !== person.id || editMode || addAlbumMode || addPostMode) return null
+        return (
             <div className="w-100">
-                <button onClick={editButtonHandle} className="btn w-100 mb-1 btn-success">Edit</button>
-                <button onClick={clickAddNewAlbumHandle} className="btn w-100 mb-1 btn-info">Add Album</button>
-                <button onClick={addBlogButtonHandle} className="btn w-100 mb-1 btn-info">Add Post</button>
-            </div>
-        )
-    }
-    const editButtonHandle = event=>{
-        event.preventDefault()
-        changeEditMode(true)
-    }
-    const clickAddNewAlbumHandle = event=>{
-        event.preventDefault()
-        setAddAlbum(true)
-    }
-
-    const addBlogButtonHandle = (event)=>{
-        event.preventDefault()
-        setAddPost(true)
-    }
-
-    const addNewPostHandle = (formData)=>{
-        addNewPost(formData)
-        setAddPost(false)
-    }
-
-    const renderPersonInfo = ()=>{
-        if(addAlbum){
-            return(<AddAlbum onFinish={addNewAlbumHandle}/>)
-        }
-
-        if(addPost){
-            return(<AddPost onFinish={addNewPostHandle}/>)
-        }
-        return(
-            <div>
-                <PersonalAlbums personId={+id}/>
-                <PersonalBlog personId={+id}/>
+                <button onClick={editButtonHandle} className="w-100 btn btn-success my-2">Edit</button>
+                <button onClick={addAlbumButtonHandle} className="w-100 btn btn-info mb-2">Add Album</button>
+                <button onClick={addPostButtonHandle} className="w-100 btn btn-info mb-2">Add Post</button>
             </div>
         )
     }
 
-    const addNewAlbumHandle = (formData)=>{
-        addNewAlbum(formData)
-        setAddAlbum(false)
+    const editButtonHandle = event => {
+        event.preventDefault()
+        setEditMode()
+    }
+
+    const addAlbumButtonHandle = event => {
+        event.preventDefault()
+        setAddAlbumMode()
+    }
+
+    const addPostButtonHandle = event => {
+        event.preventDefault()
+        setAddPostMode()
+    }
+
+    // const addNewAlbumHandle = formData => {
+    //     addNewAlbum(formData)
+    //     setAddAlbumMode()
+    // }
+
+    const renderPersonInfo = () => {
+
+        if (addAlbumMode) {
+            return (<AddAlbum />)
+        }
+        if (addPostMode) {
+            return <AddPost />;
+        }
+        if (editMode) {
+            return null
+        }
+
+        return (<div>
+            <PersonalAlbums personId={+id}/>
+            <PersonalBlog personId={+id}/>
+        </div>)
+
     }
 
     return (
@@ -163,17 +131,24 @@ const PersonProfile =({activePerson, editPerson, editMode, changeEditMode})=>{
     )
 }
 
-const mapStateToProps= (state)=>{
-    return{
-        activePerson:+state.persons.activePerson,
-        editMode:state.persons.editMode
+const mapStateToProps = state => {
+    return {
+        activePerson: +state.persons.activePerson,
+        person: state.persons.personById,
+        editMode: state.persons.editMode,
+        addPostMode: state.posts.addPostMode,
+        addAlbumMode: state.albums.addAlbumMode
     }
 }
 
-const mapDispatchToProps= (dispatch)=>{
-    return{
-        changeEditMode:(editMode)=>dispatch({type:CHANGE_EDIT_MODE, payload:editMode}),
-        editPerson: (person) => dispatch(editPerson(person))
+const mapDispatchToProps = dispatch => {
+    return {
+        editLocalPerson: person => dispatch(editPerson(person)),
+        setLocalPerson: id => dispatch(setPersonById(id)),
+        setEditMode: () => dispatch({type: CHANGE_EDIT_MODE}),
+        setAddPostMode: () => dispatch({type: CHANGE_ADD_POST}),
+        setAddAlbumMode:()=>dispatch({type:CHANGE_ADD_ALBUM_MODE})
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(PersonProfile)

@@ -1,46 +1,51 @@
-import React, {useState} from "react";
+import React, {useState} from "react"
+import {connect} from "react-redux";
+import {addPhoto} from "../../store/actions/photos";
 
-const AddPhoto = ({albumId, addNewPhoto})=>{
-    const [photo, setPhoto]= useState({
+const AddPhoto = ({albumId, addPhotoLocal}) => {
+
+    const [photo, setPhoto] = useState({
         albumId,
-        title:"",
-        src:""
+        title: '',
+        src: ''
     })
 
-    const changeHandle = event=>{
-        event.preventDefault()
-        setPhoto({...photo, [event.target.name]:event.target.value})
+    const changeHandle = event => {
+        setPhoto({...photo, [event.target.name]: event.target.value})
     }
 
-    const submitHandle = event=>{
+    const submitHandle = event => {
         event.preventDefault()
-        addNewPhoto(photo)
+        addPhotoLocal(photo)
+
         setPhoto({
             albumId,
-            title:"",
-            src:""
+            title: '',
+            src: ''
         })
-
-
     }
 
-    return(
+    return (
         <form onSubmit={submitHandle}>
             <div className="form-group mb-2">
-            <label>Photo Title</label>
-            <input className="form-control" type="text" name="title"  value={photo.title} onChange={changeHandle}/>
+                <label>Title</label>
+                <input type="text" className="form-control" name="title" value={photo.title} onChange={changeHandle}/>
             </div>
             <div className="form-group mb-2">
                 <label>SRC</label>
-                <input className="form-control" type="text" name="src" value ={photo.src} onChange={changeHandle}/>
+                <input type="text" className="form-control" name="src" value={photo.src} onChange={changeHandle}/>
             </div>
             <div className="form-group">
-            <button type="submit" className="btn btn-primary w-100">Add</button>
+                <button type="submit" className="btn btn-primary w-100">Add</button>
             </div>
-            </form>
-            )
+        </form>
+    )
 }
 
+const mapDispatchToProps = dispatch=>{
+    return{
+        addPhotoLocal: photo=>dispatch(addPhoto(photo))
+    }
+}
 
-
-export default AddPhoto
+export default connect(null, mapDispatchToProps) (AddPhoto)

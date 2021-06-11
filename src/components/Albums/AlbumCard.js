@@ -3,7 +3,7 @@ import {GlobalContext} from "../App";
 import {useParams} from "react-router-dom"
 import PhotoCard from "../Photos/PhotoCard";
 
-const AlbumItem = ()=>{
+const AlbumCard = ()=>{
     const {photos, getPersonById, getAlbumById} = useContext(GlobalContext)
     const {id} = useParams()
     const [album, setAlbum] = useState(getAlbumById(+id))
@@ -35,4 +35,4 @@ const AlbumItem = ()=>{
 
     return renderAlbum()
 }
-export default AlbumItem
+export default AlbumCard

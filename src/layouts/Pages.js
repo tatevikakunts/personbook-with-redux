@@ -5,7 +5,7 @@ import Home from "../components/Home";
 import Persons from "../components/Persons/Persons";
 import PersonProfile from "../components/Persons/PersonProfile";
 import Albums from "../components/Albums/Albums";
-import AlbumItem from "../components/Albums/AlbumItem";
+import AlbumCard from "../components/Albums/AlbumCard";
 
 const Pages = ()=>{
     return(
@@ -26,7 +26,7 @@ const Pages = ()=>{
                 <Albums/>
             </Route>
             <Route path="/albums/:id">
-                <AlbumItem/>
+                <AlbumCard/>
             </Route>
         </Switch>
     )

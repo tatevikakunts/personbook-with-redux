@@ -1,28 +1,28 @@
-import React, {useContext, useState} from "react";
-import {GlobalContext} from "../App";
+import React from "react";
+import {connect} from "react-redux"
 
-const PersonalBlog = ({personId})=>{
-    const {posts}=useContext(GlobalContext)
-    const personalPosts = posts.filter(p=>p.personId===personId)
-
-    const renderBlog = ()=>{
-        if (!personalPosts.length){
-            return(<h3>oops...</h3>)
+const PersonalBlog = ({ personId, posts }) => {
+    const personalPosts = posts.filter((p) => p.personId === personId);
+    const renderBlog = () => {
+        if (!personalPosts.length) {
+            return <h3>Ooops...</h3>;
         }
-        return posts.map(post=>(
+        return posts.map((post) => (
             <div key={post.id} className="card">
                 <div className="card-body">
                     <h3 className="card-title">{post.title}</h3>
                     <p className="card-text">{post.short}</p>
                 </div>
             </div>
-        ))
-    }
+        ));
+    };
+    return <div className="container">{renderBlog()}</div>;
+};
 
-    return(
-        <div className="container">
-            {renderBlog()}
-        </div>
-    )
+const mapStateToProps = state => {
+    return {
+        posts: state.posts.list
+    }
 }
-export default PersonalBlog
+
+export default connect(mapStateToProps, null)(PersonalBlog)
