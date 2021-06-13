@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 const Albums = ({albums, photos}) => {
     //const {photos} = useContext(GlobalContext)
 
+
     const renderAlbums = () => {
         if (!albums.length) {
             return (

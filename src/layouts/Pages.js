@@ -5,7 +5,7 @@ import Home from "../components/Home";
 import Persons from "../components/Persons/Persons";
 import PersonProfile from "../components/Persons/PersonProfile";
 import Albums from "../components/Albums/Albums";
-import Album from "../components/Albums/AlbumCard";
+import Album from "../components/Albums/Album";
 
 const Pages = ()=>{
     return(

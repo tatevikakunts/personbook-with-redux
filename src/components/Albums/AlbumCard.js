@@ -1,54 +1,47 @@
-import React, {useContext, useEffect, useState} from "react";
-import {GlobalContext} from "../App";
-import {useParams} from "react-router-dom"
-import PhotoCard from "../Photos/PhotoCard";
+import React, {useEffect} from 'react'
+import {useHistory} from 'react-router-dom'
 import {connect} from "react-redux";
-import {setAlbumById} from "../../store/actions/albums";
 import {setPersonById} from "../../store/actions/persons";
 
-const AlbumCard = ({photos, setAlbumLocal, setLocalPerson})=>{
+const AlbumCard = ({album, photo, setLocalPerson}) => {
     //const {getPersonById} = useContext(GlobalContext)
-    const {id} = useParams()
-    const [album, setAlbum] = useState(null)
-    const [person, setPerson]= useState(null)
-    const[albumPhotos, setAlbumPhotos]=useState(photos.filter(p=>p.albumId===+id))
+    const person = setLocalPerson(+album.personId)
 
-    useEffect(()=>{
-        if(album){
-            setLocalPerson(album.personId)
-            setAlbumLocal(+id)
-        }
-    },[])
+    // useEffect(()=>{
+    //     setLocalPerson(album.personId)
+    //
+    // },[])
 
-    const renderAlbum = ()=>{
-        if(!album || !person){
-            return(<div>Loading...</div>)
-        }
-        return(
-            <div className="container">
-                <h1>{album.title}</h1>
-                <h2>by {person.lName} {person.fName}</h2>
-                <div className="row">
-                    {albumPhotos.map(photo=><PhotoCard key={photo.id} photo={photo}/>)}
-                </div>
-            </div>
+    let history = useHistory()
 
-        )
+    const clickHandler = event => {
+        event.preventDefault()
+        history.push(`/albums/${album.id}`)
     }
 
-    return renderAlbum()
+    return (
+        <div className="col-6 col-sm-4 col-md-3">
+            <div className="card cur-pointer" onClick={clickHandler}>
+                <img src={photo.src} alt={album.title}/>
+                <div className="card-body">
+                    <h3 className="card-title">{album.title}</h3>
+                    <p className="card-text">{person.lName} {person.fName[0].toUpperCase()}.</p>
+                </div>
+            </div>
+        </div>
+    )
 }
 const mapStateToProps = state=>{
     return{
-        photos:state.photos.list
-    }
-}
 
+    }
+
+}
 const mapDispatchToProps = dispatch=>{
     return{
-        setAlbumLocal: id=>dispatch(setAlbumById(id)),
-        setLocalPerson:personId=>dispatch(setPersonById(personId))
-
+        setLocalPerson:id=>dispatch(setPersonById(+id))
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AlbumCard)
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (AlbumCard)
