@@ -65,9 +65,9 @@ export const editPerson = person => {
 }
 
 export const setPersonById = personId => {
-    return dispatch => {
+    return async dispatch => {
         try {
-            dispatch( setPersonByIdInState(personId) )
+            await dispatch( setPersonByIdInState(personId) )
         } catch (e) {
             console.log(e.message)
         }

@@ -1,16 +1,21 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {useHistory} from 'react-router-dom'
-import {connect} from "react-redux";
-import {setPersonById} from "../../store/actions/persons";
+import {useSelector} from "react-redux";
 
-const AlbumCard = ({album, photo, setLocalPerson}) => {
-    //const {getPersonById} = useContext(GlobalContext)
-    const person = setLocalPerson(+album.personId)
 
-    // useEffect(()=>{
-    //     setLocalPerson(album.personId)
-    //
-    // },[])
+const AlbumCard = ({album, photo}) => {
+
+    const person =useSelector((state)=>{
+        const idx = state.persons.list.findIndex(p=>p.id===album.personId)
+        if (idx===-1){
+            return {
+                fName:"No",
+                lName: "Name"
+            }
+        }
+        return state.persons.list[idx]
+    })
+
 
     let history = useHistory()
 
@@ -19,29 +24,20 @@ const AlbumCard = ({album, photo, setLocalPerson}) => {
         history.push(`/albums/${album.id}`)
     }
 
+
     return (
         <div className="col-6 col-sm-4 col-md-3">
             <div className="card cur-pointer" onClick={clickHandler}>
                 <img src={photo.src} alt={album.title}/>
                 <div className="card-body">
                     <h3 className="card-title">{album.title}</h3>
-                    <p className="card-text">{person.lName} {person.fName[0].toUpperCase()}.</p>
+                    <p className="card-text"> {person.lName} {person.fName[0].toUpperCase()}. </p>
                 </div>
             </div>
         </div>
     )
 }
-const mapStateToProps = state=>{
-    return{
-
-    }
-
-}
-const mapDispatchToProps = dispatch=>{
-    return{
-        setLocalPerson:id=>dispatch(setPersonById(+id))
-    }
-}
 
 
-export default connect(mapStateToProps, mapDispatchToProps) (AlbumCard)
+
+export default  AlbumCard

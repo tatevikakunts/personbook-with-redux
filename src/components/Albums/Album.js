@@ -15,10 +15,14 @@ const Album = ({photos, setAlbumLocal, setLocalPerson})=>{
 
     useEffect(()=>{
         if(album){
-            setLocalPerson(album.personId)
+            setLocalPerson(+album.personId)
             setAlbumLocal(+id)
         }
     },[])
+    // useEffect(() => {
+    //     setLocalPerson(+album.personId)
+    // }, [album]);
+
 
     const renderAlbum = ()=>{
         if(!album || !person){
